@@ -1,0 +1,3 @@
+[submodule "palettes"]
+	path = palettes
+	url = git@github.com:quavmo/dunmanifestin-palettes.git
