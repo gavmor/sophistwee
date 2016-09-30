@@ -4,11 +4,13 @@ require 'rubygems'
 require 'dunmanifestin/terminator'
 require './twitter_shell'
 
-YAML.load_file("sophistwee.yml").tap do |scrt|
-  consumer_key scrt.fetch(:consumer_key)
-  consumer_secret scrt.fetch(:consumer_secret)
-  secret scrt.fetch(:access_token_secret)
-  token scrt.fetch(:access_token)
+secrets = File.exists?("sophistwee.yml") ? YAML.load_file("sophistwee.yml") : ENV
+
+secrets.tap do |s|
+  consumer_key s.fetch(:consumer_key)
+  consumer_secret s.fetch(:consumer_secret)
+  secret s.fetch(:access_token_secret)
+  token s.fetch(:access_token)
 end
 
 dun = Terminator.new(shell: TwitterShell)
