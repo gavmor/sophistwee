@@ -5,17 +5,19 @@ require 'dunmanifestin/terminator'
 require "active_support"
 require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/string'
-require './twitter_shell'
+# require './twitter_shell'
+require './stack_shell'
 
-secrets = File.exists?("sophistwee.yml") ? YAML.load_file("sophistwee.yml") : ENV
+manifest = ->(dun){ dun.address(genre: './palettes/sophistry') }
+# duntweet = Terminator.new(shell: TwitterShell)
+dunstack = Terminator.new(shell: StackShell)
 
-HashWithIndifferentAccess.new(secrets).tap do |s|
-  consumer_key s.fetch(:consumer_key)
-  consumer_secret s.fetch(:consumer_secret)
-  secret s.fetch(:access_token_secret)
-  token s.fetch(:access_token)
+
+# loop { manifest[duntweet] }
+
+app = Proc.new do
+  manifest[dunstack]
+  ['200', {'Content-Type' => 'text/html'}, [StackShell.get]]
 end
 
-dun = Terminator.new(shell: TwitterShell)
-loop { dun.address genre: './palettes/sophistry' }
-
+run app
