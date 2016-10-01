@@ -17,7 +17,7 @@ module TwitterShell
     
     def puts(str)
       retries ||= 0
-      p(str.strip) ? p(retries) : raise('Garbage')
+      tweet(str.strip) ? p(retries) : raise('Garbage')
     rescue
       retries += 1
       retry
